@@ -1,0 +1,27 @@
+{
+  "name": "wineaboutit.jlinx.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^6.0.0",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "express-promise-router": "^4.1.1",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-oauth2": "^1.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
