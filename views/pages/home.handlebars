@@ -1,1 +1,11 @@
-<div>home page</div>
+{{#if user}}
+  <div>
+    <h4>You're logged in as:</h4>
+    <pre><code>{{toJSON user}}</code></pre>
+  </div>
+{{else}}
+  <div>
+    <h4>You're not logged in</h4>
+    <a href="/login">Login via DataPal</a>
+  </div>
+{{/if}}

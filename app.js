@@ -34,7 +34,8 @@ app.use(expressSession({
   secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: true,
-  trustProxy: process.env.NODE_ENV === 'production',
+  // trustProxy: process.env.NODE_ENV === 'production',
+  trustProxy: true,
   cookie: {
     sameSite: false,
     maxAge: 7 * 24 * 60 * 60 * 1000, // ms
@@ -53,6 +54,13 @@ app.use((req, res, next) => {
     session: req.session,
     user: req.user,
   })
+  if (req.session['oauth2:datapal.jlinx.test']){
+    console.log(
+      'oauth2:datapal.jlinx.test ----->',
+      req.session['oauth2:datapal.jlinx.test']
+    )
+
+  }
   res.locals.user = req.user
   next()
 })
@@ -65,6 +73,19 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.render('pages/home')
 })
+
+app.get('/login', passport.authenticate('oauth2'))
+
+app.get('/auth/callback',
+  passport.authenticate('oauth2', {
+    failureRedirect: '/',
+    failureMessage: true,
+  }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+)
 
 app.get('/fake-login', (req, res, next) => {
   req.login({ id: 42, fake: true }, error => {

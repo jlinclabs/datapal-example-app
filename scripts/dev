@@ -2,4 +2,4 @@
 
 set -e
 set -x
-exec nodemon -w . --exec ./scripts/start.js
+exec nodemon -w . -w .env --exec ./scripts/start.js
