@@ -54,11 +54,22 @@ app.use((req, res, next) => {
     session: req.session,
     user: req.user,
   })
+
+
   if (req.session['oauth2:datapal.jlinx.test']){
     console.log(
       'oauth2:datapal.jlinx.test ----->',
       req.session['oauth2:datapal.jlinx.test']
     )
+    // aparently a successful OIDC login yields this weird object
+    /*
+     *  state: {
+     *    handle: '3FohAXj2xK3mtVr3BVggGS2l',
+     *    code_verifier: 'B-53cr1n60wDpxgqMERSxVkeCujCjThm-EfQy9zGczQ'
+     *  }
+     *
+     * I do not know how to use this yet
+     **/
 
   }
   res.locals.user = req.user
