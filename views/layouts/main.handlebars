@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover"/>
+    <meta name="theme-color" content="#111119" />
+    <meta name="description" content="Wine About It" />
     <title>Wine About It!</title>
+    <link href="/index.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Example Data Pal Oauth App</h1>
+    <nav class=" relative w-full flex flex-row flex-wrap items-center justify-between py-4 bg-gray-100 text-gray-500 hover:text-gray-700 focus:text-gray-700 shadow-lg navbar navbar-expand-lg navbar-light">
+      <img class="mx-4" src="/favicon/favicon-32x32.png"/>
+      <ul class="navbar-nav flex flex-row pl-0 list-style-none">
+        <li class="nav-item px-2">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item pr-2">
+          <a class="nav-link text-gray-500 hover:text-gray-700 focus:text-gray-700 p-0" href="#">Features</a>
+        </li>
+        <li class="nav-item pr-2">
+          <a class="nav-link text-gray-500 hover:text-gray-700 focus:text-gray-700 p-0" href="#">Pricing</a>
+        </li>
+        <li class="nav-item pr-2">
+          <a class="nav-link disabled text-gray-300 p-0">Disabled</a>
+        </li>
+      </ul>
+      <div class="container-fluid flex flex-wrap items-center justify-between px-6">
+        <a class="nav-link text-gray-300 p-0">Login / Signup</a>
+      </div>
+    </nav>
     {{{body}}}
   </body>
 </html>
