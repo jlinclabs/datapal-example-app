@@ -73,6 +73,9 @@ app.use((req, res, next) => {
      **/
 
   }
+  res.locals.process = {
+    env: process.env,
+  }
   res.locals.user = req.user
   res.locals.session = {...req.session}
   res.locals.oauth = req.session['oauth2:datapal.jlinx.test']

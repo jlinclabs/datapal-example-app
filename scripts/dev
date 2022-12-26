@@ -2,8 +2,4 @@
 
 set -e
 set -x
-exec concurrently --kill-others-on-fail \
-  --names "server,tailwind" \
-  -- \
-  'nodemon -w . -w .env --exec ./scripts/start.js' \
-  'npx tailwindcss -i ./css/index.css -o ./static/index.css --watch'
+exec nodemon -w . -w .env --exec ./scripts/start.js
