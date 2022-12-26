@@ -87,10 +87,10 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use((req, res, next) => {
-  console.log('locals', res.locals)
-  next()
-})
+// app.use((req, res, next) => {
+//   console.log('locals', res.locals)
+//   next()
+// })
 
 app.get('/', (req, res) => {
   res.render('pages/home')
@@ -100,14 +100,23 @@ app.get('/login', passport.authenticate('oauth2'))
 
 app.get('/auth/callback',
   passport.authenticate('oauth2', {
-    failureRedirect: '/',
-    failureMessage: true,
+    // failureRedirect: '/login/failed',
+    // failureMessage: true,
   }),
   function(req, res) {
+    console.log('🚢 GET /auth/callback', {
+      query: req.query,
+    })
     // Successful authentication, redirect home.
     res.redirect('/');
   }
 )
+app.get('/login/failed', (req, res, next) => {
+  console.log(req)
+  res.render('pages/login-failed', {
+    error: `fake error here`
+  })
+})
 
 app.get('/fake-login', (req, res, next) => {
   req.login({ id: 42, fake: true }, error => {

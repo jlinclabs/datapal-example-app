@@ -12,6 +12,7 @@ passport.use(new OAuth2Strategy(
     pkce: true,
   },
   function(accessToken, refreshToken, profile, cb) {
+    console.log('🛳 PASSPORT verify func', { accessToken, refreshToken, profile })
     // User.findOrCreate({ exampleId: profile.id }, function (err, user) {
     //   return cb(err, user)
     // })
