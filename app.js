@@ -96,7 +96,10 @@ app.get('/', (req, res) => {
   res.render('pages/home')
 })
 
-app.get('/login', passport.authenticate('oauth2'))
+app.get('/login', (req, res) => {
+  res.redirect(`${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`)
+})
+// app.get('/login', passport.authenticate('oauth2'))
 
 app.get('/auth/callback',
   passport.authenticate('oauth2', {
