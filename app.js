@@ -73,6 +73,13 @@ app.use((req, res, next) => {
 
   }
   res.locals.user = req.user
+  res.locals.session = {...req.session}
+  res.locals.oauth = req.session['oauth2:datapal.jlinx.test']
+  res.locals.debug = {
+    user: req.user,
+    session: {...req.session},
+    oauth: req.session['oauth2:datapal.jlinx.test'],
+  }
   next()
 })
 
