@@ -72,8 +72,16 @@ routes.get('/login/failed', (req, res, next) => {
 })
 
 // temporay hack until we can get oauth2 working
-routes.get('/datapal/auth/callback', (req, res) => {
+routes.post('/datapal/auth/callback', (req, res) => {
+  const { userId, sessionSecret, returnTo = '/' } = req.query
 
+  const datapal = new DataPalHttpClient({ sessionSecret })
+
+  // req.session.userId = userId
+  // req.session.sessionSecret = sessionSecret
+  // res.redirect(returnTo)
+  // req.login
+  res.render('redirect', {to: returnTo})
 })
 
 routes.get('/fake-login', (req, res, next) => {

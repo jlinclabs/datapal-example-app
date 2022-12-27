@@ -1,0 +1,9 @@
+{
+  "name": "@datapal/http-client",
+  "version": "0.0.1",
+  "description": "DataPal HTTP Client",
+  "main": "index.js",
+  "keywords": ["DataPal"],
+  "author": "Jared Grippe",
+  "license": "MIT"
+}
