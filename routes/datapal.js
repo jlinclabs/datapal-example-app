@@ -1,5 +1,6 @@
 import Router from 'express-promise-router'
 import passport from '../passport.js'
+import DataPalHTTPClient from '@datapal/http-client'
 
 const routes = new Router()
 export default routes
@@ -72,10 +73,13 @@ routes.get('/login/failed', (req, res, next) => {
 })
 
 // temporay hack until we can get oauth2 working
-routes.post('/datapal/auth/callback', (req, res) => {
-  const { userId, sessionSecret, returnTo = '/' } = req.query
+routes.post('/datapal/auth/callback', async (req, res) => {
+  const { userId, authToken, returnTo = '/' } = req.query
 
-  const datapal = new DataPalHttpClient({ sessionSecret })
+  const datapal = new DataPalHTTPClient()
+  await datapal.login(authToken)
+  const whoami = await datapal.whoami()
+  console.log({ whoami })
 
   // req.session.userId = userId
   // req.session.sessionSecret = sessionSecret
