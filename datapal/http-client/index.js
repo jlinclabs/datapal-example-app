@@ -28,9 +28,14 @@ export default class DataPalHTTPClient {
     return {cookie: this.cookie}
   }
 
-  async login(authToken) {
-    const res = await this.do('session.login', { authToken })
+  async login(loginToken) {
+    const res = await this.do('session.login', { loginToken })
     console.log('logged in?', res)
+  }
+
+  async logout() {
+    await this.do('session.logout', {})
+    delete this.cookie
   }
 
   async whoami(){

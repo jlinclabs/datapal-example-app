@@ -7,8 +7,7 @@ export default routes
 
 routes.use(passport.authenticate('session'))
 
-routes.use((req, res, next) => {
-
+routes.use(async (req, res, next) => {
 
   console.log(`${req.protocol} ${req.method} ${req.url}`, {
     body: req.body,
@@ -20,6 +19,12 @@ routes.use((req, res, next) => {
 
   if (req.user){
     req.datapal = DataPalHTTPClient.fromObject(req.user)
+    res.locals.user = await req.datapal.whoami()
+    // res.locals.user = {
+    //   id
+    //   displayName
+    //   avatar
+    // }
   }
 
   // if (req.session['oauth2:datapal.jlinx.test']){
@@ -41,14 +46,14 @@ routes.use((req, res, next) => {
   res.locals.process = {
     env: process.env,
   }
-  res.locals.user = req.user
-  res.locals.session = {...req.session}
-  res.locals.oauth = req.session['oauth2:datapal.jlinx.test']
-  res.locals.debug = {
-    user: req.user,
-    session: {...req.session},
-    oauth: req.session['oauth2:datapal.jlinx.test'],
-  }
+  /*res.locals.user = req.user
+  res.locals.session = {...req.session}*/
+  // res.locals.oauth = req.session['oauth2:datapal.jlinx.test']
+  // res.locals.debug = {
+  //   user: req.user,
+  //   session: {...req.session},
+  //   oauth: req.session['oauth2:datapal.jlinx.test'],
+  // }
   next()
 })
 routes.get('/login', (req, res) => {
@@ -79,10 +84,10 @@ routes.get('/login/failed', (req, res, next) => {
 
 // temporay hack until we can get oauth2 working
 routes.post('/datapal/auth/callback', async (req, res) => {
-  const { userId, authToken, returnTo = '/' } = req.query
+  const { loginToken, returnTo = '/' } = req.query
 
   const datapal = new DataPalHTTPClient()
-  await datapal.login(authToken)
+  await datapal.login(loginToken)
   const whoami = await datapal.whoami()
   console.log({ whoami })
   console.log({ cookie: datapal.cookie })
@@ -103,13 +108,15 @@ routes.post('/datapal/auth/callback', async (req, res) => {
   res.render('redirect', {to: returnTo})
 })
 
-routes.get('/logout', (req, res, next) => {
+routes.get('/logout', async (req, res, next) => {
+  if (req.datapal) await req.datapal.logout()
   req.logout(error => {
     if (error) return next(error)
     // res.redirect('/')
     res.render('redirect', {to: '/'})
   })
 })
+
 routes.get('/fake-login', (req, res, next) => {
   req.login({ id: 42, fake: true }, error => {
     if (error) return next(error)

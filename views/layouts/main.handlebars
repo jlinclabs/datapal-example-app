@@ -34,8 +34,24 @@
           <div>
             {{#if user}}
               <div>
-                <h4>Welcome back</h4>
-                <pre><code>{{toJSON user}}</code></pre>
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{user.displayName}}
+                    {{#if user.avatar}}
+                      <img
+                        class="rounded-circle"
+                        src="{{user.avatar}}"
+                        alt="{{user.displayName}}"
+                        height="50px"
+                      />
+                    {{/if}}
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    <li>
+                      <a href="/logout" class="dropdown-item" type="button">Logout</a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             {{else}}
               <a class="btn btn-primary" href="/login">Login via DataPal</a>
