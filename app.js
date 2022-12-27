@@ -2,11 +2,8 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import expressSession from 'express-session'
 import { create } from 'express-handlebars'
-
 import './environment.js'
-import passport from './passport.js'
-
-
+import routes from './routes/index.js'
 
 const hbs = create({
   helpers: {
@@ -45,99 +42,7 @@ app.use(expressSession({
   },
 }))
 
-app.use(passport.authenticate('session'))
 
-app.use((req, res, next) => {
-  console.log(`${req.protocol} ${req.method} ${req.url}`, {
-    body: req.body,
-    query: req.query,
-    params: req.params,
-    session: req.session,
-    user: req.user,
-  })
-
-
-  if (req.session['oauth2:datapal.jlinx.test']){
-    console.log(
-      'oauth2:datapal.jlinx.test ----->',
-      req.session['oauth2:datapal.jlinx.test']
-    )
-    // aparently a successful OIDC login yields this weird object
-    /*
-     *  state: {
-     *    handle: '3FohAXj2xK3mtVr3BVggGS2l',
-     *    code_verifier: 'B-53cr1n60wDpxgqMERSxVkeCujCjThm-EfQy9zGczQ'
-     *  }
-     *
-     * I do not know how to use this yet
-     **/
-
-  }
-  res.locals.process = {
-    env: process.env,
-  }
-  res.locals.user = req.user
-  res.locals.session = {...req.session}
-  res.locals.oauth = req.session['oauth2:datapal.jlinx.test']
-  res.locals.debug = {
-    user: req.user,
-    session: {...req.session},
-    oauth: req.session['oauth2:datapal.jlinx.test'],
-  }
-  next()
-})
-
-// app.use((req, res, next) => {
-//   console.log('locals', res.locals)
-//   next()
-// })
-
-app.get('/', (req, res) => {
-  res.render('pages/home')
-})
-
-app.get('/login', (req, res) => {
-  res.redirect(`${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`)
-})
-// app.get('/login', passport.authenticate('oauth2'))
-
-app.get('/auth/callback',
-  passport.authenticate('oauth2', {
-    // failureRedirect: '/login/failed',
-    // failureMessage: true,
-  }),
-  function(req, res) {
-    console.log('🚢 GET /auth/callback', {
-      query: req.query,
-    })
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-)
-app.get('/login/failed', (req, res, next) => {
-  console.log(req)
-  res.render('pages/login-failed', {
-    error: `fake error here`
-  })
-})
-
-app.get('/fake-login', (req, res, next) => {
-  req.login({ id: 42, fake: true }, error => {
-    if (error) return next(error)
-    // res.redirect('/')
-    res.render('redirect', {to: '/'})
-  })
-})
-// app.render('/', 'pages/home')
-
-// app.get('/auth/example', passport.authenticate('oauth2'));
-//
-// app.get('/auth/example/callback',
-//   passport.authenticate('oauth2', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('/');
-//   },
-// );
+app.use(routes)
 
 export default app
