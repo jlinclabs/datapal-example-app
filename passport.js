@@ -21,7 +21,7 @@ passport.use(new OAuth2Strategy(
 
 passport.serializeUser(function(user, cb) {
   process.nextTick(function() {
-    cb(null, JSON.stringify({ id: user.id }))
+    cb(null, JSON.stringify(user))
   })
 })
 

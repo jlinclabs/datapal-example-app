@@ -3,10 +3,11 @@ import datapalRoutes from './datapal.js'
 
 const routes = new Router()
 
+routes.use(datapalRoutes)
+
 routes.get('/', (req, res) => {
   res.render('pages/home')
 })
-routes.use(datapalRoutes)
 
 
 export default routes

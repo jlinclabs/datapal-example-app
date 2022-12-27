@@ -42,7 +42,6 @@ app.use(expressSession({
   },
 }))
 
-
 app.use(routes)
 
 export default app

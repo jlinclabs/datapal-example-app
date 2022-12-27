@@ -7,19 +7,25 @@ console.log(
 )
 export default class DataPalHTTPClient {
 
-  constructor() {
-    this.cookieJar = new fetchCookie.toughCookie.CookieJar()
-    this.fetch = fetchCookie(fetch, this.cookieJar)
-    // this.fetch = fetchCookie(fetch, {
-    //   getCookieString: async (currentUrl) => {
-    //     console.log('🍪 getCookieString', {currentUrl})
-    //     return this.cookieString
-    //   },
-    //   setCookie: async (cookieString, currentUrl, opts) => {
-    //     console.log('🍪 setCookie', {cookieString, currentUrl, opts })
-    //     this.cookieString = cookieString
-    //   },
-    // })
+  static fromObject({ cookie }){
+    return new this({ cookie })
+  }
+
+  constructor({ cookie } = {}) {
+    this.cookie = cookie
+    // const cookieJar = new fetchCookie.toughCookie.CookieJar()
+    this.fetch = fetchCookie(fetch, {
+      getCookieString: async () => {
+        return this.cookie
+      },
+      setCookie: async cookieString => {
+        this.cookie = cookieString.split(';')[0]
+      },
+    })
+  }
+
+  toObject(){
+    return {cookie: this.cookie}
   }
 
   async login(authToken) {

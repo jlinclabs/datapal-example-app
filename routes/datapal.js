@@ -8,6 +8,8 @@ export default routes
 routes.use(passport.authenticate('session'))
 
 routes.use((req, res, next) => {
+
+
   console.log(`${req.protocol} ${req.method} ${req.url}`, {
     body: req.body,
     query: req.query,
@@ -16,23 +18,26 @@ routes.use((req, res, next) => {
     user: req.user,
   })
 
-
-  if (req.session['oauth2:datapal.jlinx.test']){
-    console.log(
-      'oauth2:datapal.jlinx.test ----->',
-      req.session['oauth2:datapal.jlinx.test']
-    )
-    // aparently a successful OIDC login yields this weird object
-    /*
-     *  state: {
-     *    handle: '3FohAXj2xK3mtVr3BVggGS2l',
-     *    code_verifier: 'B-53cr1n60wDpxgqMERSxVkeCujCjThm-EfQy9zGczQ'
-     *  }
-     *
-     * I do not know how to use this yet
-     **/
-
+  if (req.user){
+    req.datapal = DataPalHTTPClient.fromObject(req.user)
   }
+
+  // if (req.session['oauth2:datapal.jlinx.test']){
+  //   console.log(
+  //     'oauth2:datapal.jlinx.test ----->',
+  //     req.session['oauth2:datapal.jlinx.test']
+  //   )
+  //   // aparently a successful OIDC login yields this weird object
+  //   /*
+  //    *  state: {
+  //    *    handle: '3FohAXj2xK3mtVr3BVggGS2l',
+  //    *    code_verifier: 'B-53cr1n60wDpxgqMERSxVkeCujCjThm-EfQy9zGczQ'
+  //    *  }
+  //    *
+  //    * I do not know how to use this yet
+  //    **/
+  //
+  // }
   res.locals.process = {
     env: process.env,
   }
@@ -80,7 +85,17 @@ routes.post('/datapal/auth/callback', async (req, res) => {
   await datapal.login(authToken)
   const whoami = await datapal.whoami()
   console.log({ whoami })
+  console.log({ cookie: datapal.cookie })
 
+  const user = datapal.toObject()
+  console.log('LOGGIING AS', { user })
+  await new Promise((resolve, reject) => {
+    req.login(user, function(error) {
+      if (error) return reject(error)
+      resolve()
+    })
+  })
+  // this.session.datapalCookie = datapal.cookie
   // req.session.userId = userId
   // req.session.sessionSecret = sessionSecret
   // res.redirect(returnTo)
@@ -88,6 +103,13 @@ routes.post('/datapal/auth/callback', async (req, res) => {
   res.render('redirect', {to: returnTo})
 })
 
+routes.get('/logout', (req, res, next) => {
+  req.logout(error => {
+    if (error) return next(error)
+    // res.redirect('/')
+    res.render('redirect', {to: '/'})
+  })
+})
 routes.get('/fake-login', (req, res, next) => {
   req.login({ id: 42, fake: true }, error => {
     if (error) return next(error)
