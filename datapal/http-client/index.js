@@ -39,7 +39,13 @@ export default class DataPalHTTPClient {
   }
 
   async whoami(){
-    return await this.get('session.get')
+    if (!this.cookie) return
+    try {
+      return await this.get('session.get')
+    }catch(error){
+      console.error(`DataPal error`, error)
+      delete this.cookie
+    }
   }
 
 

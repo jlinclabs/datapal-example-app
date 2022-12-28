@@ -11,7 +11,18 @@
   <div class="mt-4">
   {{#if user}}
     <div>
-      <h4>You're already logged in as:</h4>
+      <h4>Welcome Back {{user.displayName}}</h4>
+
+      {{#if user.avatar}}
+        <img
+          class="rounded-circle"
+          src="{{user.avatar}}"
+          alt="{{user.displayName}}"
+          height="50px"
+        />
+      {{/if}}
+
+
       <pre><code>{{toJSON user}}</code></pre>
     </div>
   {{else}}
