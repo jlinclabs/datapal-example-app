@@ -1,7 +1,8 @@
-<div class="row row-cols-1 row-cols-md-2 g-4">
+<div style="display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+">
   {{#each products}}
-    <div class="col">
-      {{> productCard product=this }}
-    </div>
+    {{> productCard product=this }}
   {{/each}}
 </div>
