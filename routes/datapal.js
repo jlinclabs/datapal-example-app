@@ -57,7 +57,14 @@ routes.use(async (req, res, next) => {
   next()
 })
 routes.get('/login', (req, res) => {
-  res.redirect(`${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`)
+  let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
+  let referer = req.get('Referer')
+  if (referer) {
+    referer = new URL(referer)
+    const returnTo = referer.toString().split(referer.origin)[1]
+    url += '?returnTo=' + encodeURIComponent(returnTo)
+  }
+  res.redirect(url)
 })
 // routes.get('/login', passport.authenticate('oauth2'))
 

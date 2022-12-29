@@ -12,17 +12,34 @@ const loadFake = async name =>
     await readFile(`${process.env.APP_PATH}/fake/${name}.json`)
   )
 
-routes.get('/', async (req, res) => {
-  const products = await loadFake('products')
-  res.render('pages/home', {
-    products,
-  })
+const products = await loadFake('products')
+
+routes.use((req, res, next) => {
+  res.locals.products = products
+  next()
 })
 
+routes.get('/', async (req, res) => {
+  res.render('pages/home')
+})
 
 routes.post('/cart/add/:productId', async (req, res) => {
-  res.render('redirect', {
-    to: `/login?returnTo=${req.url}`,
+  const { productId } = req.params
+  req.session.cart = req.session.cart || []
+  req.session.cart.push(parseInt(productId, 10))
+  res.render('redirect', { to: '/cart' })
+  // res.json({ url: req.url })
+  // res.render('redirect', {
+  //   to: `/login?returnTo=${encodeURIComponent(req.url)}`,
+  // })
+})
+
+routes.get('/cart', async (req, res) => {
+  const cart = req.session.cart || []
+  const productsInCart = cart.map(id => res.locals.products.find(p => p.id === id))
+  res.render('pages/cart', {
+    cart,
+    productsInCart,
   })
 })
 

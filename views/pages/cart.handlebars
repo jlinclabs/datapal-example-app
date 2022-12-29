@@ -1,0 +1,6 @@
+<div class="container px-4 text-center" style="">
+  <h1 class="mt-4">Your Cart</h1>
+  {{#each productsInCart}}
+    {{> productCard product=this }}
+  {{/each}}
+</div>
