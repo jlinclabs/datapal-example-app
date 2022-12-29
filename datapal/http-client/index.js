@@ -34,7 +34,11 @@ export default class DataPalHTTPClient {
   }
 
   async logout() {
-    await this.do('session.logout', {})
+    try{
+      await this.do('session.logout', {})
+    }catch(error){
+      console.error(error)
+    }
     delete this.cookie
   }
 
