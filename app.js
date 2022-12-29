@@ -1,21 +1,14 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import expressSession from 'express-session'
-import { create } from 'express-handlebars'
+
+import handlebars from './handlebars.js'
 import './environment.js'
 import routes from './routes/index.js'
 
-const hbs = create({
-  helpers: {
-    toJSON(object){
-      return JSON.stringify(object, null, 2)
-    }
-  }
-})
-
 const app = express()
 
-app.engine('handlebars', hbs.engine)
+app.engine('handlebars', handlebars.engine)
 app.set('view engine', 'handlebars')
 app.set('views', './views')
 

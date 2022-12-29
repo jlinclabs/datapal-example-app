@@ -1,0 +1,16 @@
+{{#with product}}
+  <div class="card" style="width: 18rem;">
+    <div
+      class="card-img-top"
+      style="background-image: url({{image}}); height: 200px; background-size: cover; background-position: center; "
+    ></div>
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+      <div class="card-text text-truncate">{{description}}</div>
+      <div><a href="/products/{{id}}">Read More</a></div>
+      <form action="/cart/add/{{id}}" method="post">
+        <button type="submit" class="btn btn-primary">ADD TO CART</button>
+      </form>
+    </div>
+  </div>
+{{/with}}
