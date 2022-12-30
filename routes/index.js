@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises'
 import Router from 'express-promise-router'
 
-import datapalRoutes from './datapal.js'
+import datapalRoutes, { getDataPalLoginUrl } from './datapal.js'
 
 const routes = new Router()
 
@@ -40,6 +40,23 @@ routes.get('/cart', async (req, res) => {
   res.render('pages/cart', {
     cart,
     productsInCart,
+  })
+})
+
+const requireAuth = (req, res, next) => {
+  if (req.user && req.datapal.isLoggedIn) return next()
+
+
+  const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
+  console.log({ returnTo })
+  res.redirect(getDataPalLoginUrl({ returnTo }))
+  // res.render('pages/unauthorized')
+}
+
+routes.get('/account', requireAuth, async (req, res) => {
+
+  res.render('pages/account', {
+    account: res.locals.user,
   })
 })
 

@@ -42,8 +42,9 @@ export default class DataPalHTTPClient {
     delete this.cookie
   }
 
+  get isLoggedIn(){ return !!(this.cookie /* TODO check harder */) }
   async whoami(){
-    if (!this.cookie) return
+    if (!this.isLoggedIn) return
     try {
       return await this.get('session.get')
     }catch(error){

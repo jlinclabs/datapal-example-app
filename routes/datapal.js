@@ -8,7 +8,6 @@ export default routes
 routes.use(passport.authenticate('session'))
 
 routes.use(async (req, res, next) => {
-
   console.log(`${req.protocol} ${req.method} ${req.url}`, {
     body: req.body,
     query: req.query,
@@ -56,15 +55,25 @@ routes.use(async (req, res, next) => {
   // }
   next()
 })
+
+export function getDataPalLoginUrl(searchParams){
+  const url = new URL(`${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`)
+  if (searchParams)
+    for (const key in searchParams)
+      url.searchParams.set(key, searchParams[key])
+  return url
+}
+
 routes.get('/login', (req, res) => {
-  let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
+  // let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
   let referer = req.get('Referer')
+  let returnTo
   if (referer) {
     referer = new URL(referer)
-    const returnTo = referer.toString().split(referer.origin)[1]
-    url += '?returnTo=' + encodeURIComponent(returnTo)
+    returnTo = referer.toString().split(referer.origin)[1]
+    // url += '?returnTo=' + encodeURIComponent(returnTo)
   }
-  res.redirect(url)
+  res.redirect(getDataPalLoginUrl({ returnTo }))
 })
 // routes.get('/login', passport.authenticate('oauth2'))
 
@@ -100,18 +109,14 @@ routes.post('/datapal/auth/callback', async (req, res) => {
   console.log({ cookie: datapal.cookie })
 
   const user = datapal.toObject()
-  console.log('LOGGIING AS', { user })
+  console.log('LOGINING IN AS', { user })
   await new Promise((resolve, reject) => {
     req.login(user, function(error) {
       if (error) return reject(error)
       resolve()
     })
   })
-  // this.session.datapalCookie = datapal.cookie
-  // req.session.userId = userId
-  // req.session.sessionSecret = sessionSecret
-  // res.redirect(returnTo)
-  // req.login
+
   res.render('redirect', {to: returnTo})
 })
 
