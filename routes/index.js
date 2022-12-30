@@ -54,7 +54,6 @@ const requireAuth = (req, res, next) => {
 }
 
 routes.get('/account', requireAuth, async (req, res) => {
-
   res.render('pages/account', {
     account: res.locals.user,
   })

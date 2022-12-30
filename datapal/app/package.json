@@ -1,8 +1,8 @@
 {
-  "name": "@datapal/http-client",
+  "name": "@datapal/app",
   "type": "module",
   "version": "0.0.1",
-  "description": "DataPal HTTP Client",
+  "description": "DataPal App",
   "main": "index.js",
   "keywords": ["DataPal"],
   "author": "Jared Grippe",

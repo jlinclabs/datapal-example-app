@@ -1,6 +1,6 @@
 import Router from 'express-promise-router'
 import passport from '../passport.js'
-import DataPalHTTPClient from '@datapal/http-client'
+import dataPalApp from '../dataPalApp.js'
 
 const routes = new Router()
 export default routes
@@ -17,7 +17,7 @@ routes.use(async (req, res, next) => {
   })
 
   if (req.user){
-    req.datapal = DataPalHTTPClient.fromObject(req.user)
+    req.datapal = dataPalApp.userSessionfromObject(req.user)
     res.locals.user = await req.datapal.whoami()
     // res.locals.user = {
     //   id
@@ -26,10 +26,10 @@ routes.use(async (req, res, next) => {
     // }
   }
 
-  // if (req.session['oauth2:datapal.jlinx.test']){
+  // if (req.session['oauth2:dataPalApp.jlinx.test']){
   //   console.log(
-  //     'oauth2:datapal.jlinx.test ----->',
-  //     req.session['oauth2:datapal.jlinx.test']
+  //     'oauth2:dataPalApp.jlinx.test ----->',
+  //     req.session['oauth2:dataPalApp.jlinx.test']
   //   )
   //   // aparently a successful OIDC login yields this weird object
   //   /*
@@ -47,11 +47,11 @@ routes.use(async (req, res, next) => {
   }
   /*res.locals.user = req.user
   res.locals.session = {...req.session}*/
-  // res.locals.oauth = req.session['oauth2:datapal.jlinx.test']
+  // res.locals.oauth = req.session['oauth2:dataPalApp.jlinx.test']
   // res.locals.debug = {
   //   user: req.user,
   //   session: {...req.session},
-  //   oauth: req.session['oauth2:datapal.jlinx.test'],
+  //   oauth: req.session['oauth2:dataPalApp.jlinx.test'],
   // }
   next()
 })
@@ -102,7 +102,7 @@ routes.get('/login/failed', (req, res, next) => {
 routes.post('/datapal/auth/callback', async (req, res) => {
   const { loginToken, returnTo = '/' } = req.query
 
-  const datapal = new DataPalHTTPClient()
+  const datapal = dataPalApp.newUserSession()
   await datapal.login(loginToken)
   const whoami = await datapal.whoami()
   console.log({ whoami })

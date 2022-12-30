@@ -6,7 +6,17 @@ console.log(
   process.env.NODE_TLS_REJECT_UNAUTHORIZED
 )
 
-export default class DataPalHTTPClient {
+export default class DataPalApp {
+  newUserSession(){
+    return new DataPalUserSession()
+  }
+  userSessionfromObject(object){
+    return DataPalUserSession.fromObject(object)
+  }
+}
+
+
+class DataPalUserSession {
 
   static fromObject({ cookie }){
     return new this({ cookie })
@@ -44,6 +54,7 @@ export default class DataPalHTTPClient {
   }
 
   get isLoggedIn(){ return !!(this.cookie /* TODO check harder */) }
+
   async whoami(){
     if (!this.isLoggedIn) return
     try {
@@ -53,6 +64,24 @@ export default class DataPalHTTPClient {
       delete this.cookie
     }
   }
+
+  /**
+   *
+   * we need a way of requesting one instance of a document type
+   * the plan was to
+   *   1. redirect to datapal with the details of the docment requested
+   *   2. let the user select one and datapal will redirect back to us
+   *
+   *   what if apps want to create their own document?
+   *   should we have them redirect to datapal for that?
+   *
+   *   we are going to need to be able to make empty documents
+   *
+   *   when an app requests a document and the user gives them one
+   *   is it the app's responsability to remember that? if you're
+   *   a file editor
+   */
+
 
 
   // PRIVATISH
@@ -101,7 +130,7 @@ export default class DataPalHTTPClient {
       if (error) throw new Error(error.message)
       return result || null
     }catch(error){
-      error.message = `Datapal Request Error: ${error.message}`
+      error.message = `DataPal Request Error: ${error.message}`
       throw error
     }
   }
