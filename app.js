@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import expressSession from 'express-session'
+import { PrismaSessionStore } from '@quixo3/prisma-session-store'
 
 import handlebars from './handlebars.js'
 import './environment.js'
@@ -33,6 +34,14 @@ app.use(expressSession({
     secure: false, // true unless behind reverse proxy
     httpOnly: true,
   },
+  store: new PrismaSessionStore(
+    prisma,
+    {
+      checkPeriod: 2 * 60 * 1000,  //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }
+  )
 }))
 
 app.use(routes)

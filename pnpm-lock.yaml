@@ -1,8 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@datapal/app': link:dataPalApp/app
+  '@datapal/app': link:datapal/app
   '@prisma/client': ^4.8.0
+  '@quixo3/prisma-session-store': ^3.1.10
   body-parser: ^1.20.1
   bootstrap: 5.3.0-alpha1
   concurrently: ^7.6.0
@@ -20,8 +21,9 @@ specifiers:
   prisma: ^4.8.0
 
 dependencies:
-  '@datapal/app': link:dataPalApp/app
+  '@datapal/app': link:datapal/app
   '@prisma/client': 4.8.0_prisma@4.8.0
+  '@quixo3/prisma-session-store': 3.1.10_p7zpe5ocf7scns4u7rxpwvpvwa
   body-parser: 1.20.1
   bootstrap: 5.3.0-alpha1_@popperjs+core@2.11.6
   dotenv: 16.0.3
@@ -67,6 +69,20 @@ packages:
   /@prisma/engines/4.8.0:
     resolution: {integrity: sha512-A1Asn2rxZMlLAj1HTyfaCv0VQrLUv034jVay05QlqZg1qiHPeA3/pGTfNMijbsMYCsGVxfWEJuaZZuNxXGMCrA==}
     requiresBuild: true
+    dev: false
+
+  /@quixo3/prisma-session-store/3.1.10_p7zpe5ocf7scns4u7rxpwvpvwa:
+    resolution: {integrity: sha512-PRb6woSz5jC/IvRZ+fxDnBcbBikEG2DN+scysjgD3PBveXMjVZEak5ortz8NjkCjCE280UEGssVsOL2HKOyGfA==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      '@prisma/client': '>=2.16.1'
+      express-session: '>=1.17.1'
+    dependencies:
+      '@prisma/client': 4.8.0_prisma@4.8.0
+      cuid: 2.1.8
+      express-session: 1.17.3
+      ts-dedent: 2.2.0
+      type-fest: 2.19.0
     dev: false
 
   /abbrev/1.1.1:
@@ -274,6 +290,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: false
+
+  /cuid/2.1.8:
+    resolution: {integrity: sha512-xiEMER6E7TlTPnDxrM4eRiC6TRgjNX9xzEZ5U/Se2YJKr7Mq4pJn/2XEHjl3STcSh96GmkHPcBXLES8M29wyyg==}
     dev: false
 
   /data-uri-to-buffer/4.0.0:
@@ -1109,9 +1129,19 @@ packages:
     hasBin: true
     dev: true
 
+  /ts-dedent/2.2.0:
+    resolution: {integrity: sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==}
+    engines: {node: '>=6.10'}
+    dev: false
+
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
     dev: true
+
+  /type-fest/2.19.0:
+    resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
+    engines: {node: '>=12.20'}
+    dev: false
 
   /type-is/1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
