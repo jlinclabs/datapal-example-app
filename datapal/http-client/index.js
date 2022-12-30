@@ -5,6 +5,7 @@ console.log(
   'process.env.NODE_TLS_REJECT_UNAUTHORIZED',
   process.env.NODE_TLS_REJECT_UNAUTHORIZED
 )
+
 export default class DataPalHTTPClient {
 
   static fromObject({ cookie }){
