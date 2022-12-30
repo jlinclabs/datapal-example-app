@@ -6,7 +6,7 @@ import { PrismaSessionStore } from '@quixo3/prisma-session-store'
 import handlebars from './handlebars.js'
 import './environment.js'
 import routes from './routes/index.js'
-
+import prisma from './prisma/client.js'
 const app = express()
 
 app.engine('handlebars', handlebars.engine)
