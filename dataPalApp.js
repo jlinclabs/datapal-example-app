@@ -2,9 +2,15 @@ import DataPalApp from '@datapal/app'
 
 const dataPalApp = new DataPalApp({
   documentTypes: {
-    bagaaiera7tq3xaz6sawmjhz4kqaomww46ifnky2fljxs73g3u2csh2epl3ha: {
-      read: true,
-      write: true,
+    // shopping list
+    shippingAddress: {
+      permissions: {
+        read: true,
+        write: true,
+      },
+      versions: [
+        'bagaaierad6f6uuqbyiu5sdgnvrqo3uevcnnbp77dkjrhe7q2xgahkqaggana',
+      ]
     }
   },
 })

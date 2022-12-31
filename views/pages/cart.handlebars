@@ -5,6 +5,14 @@
   {{/each}}
 
 
+  <div>
+    {{#if shippingAddress}}
+      <pre><code>{{toJSON shippingAddress}}</code></pre>
+    {{else}}
+      {{#> datapalButton href="/datapal/select-shipping-address" }}
+        Provide a shipping address
+      {{/ datapalButton }}
 
-  <div>TODO [address request or show]</div>
+    {{/if}}
+  </div>
 </div>

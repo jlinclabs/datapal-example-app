@@ -7,22 +7,22 @@ console.log(
 )
 
 export default class DataPalApp {
-  newUserSession(){
-    return new DataPalUserSession()
+  constructor(options) {
+    this.documentTypes = options.documentTypes || {}
   }
-  userSessionfromObject(object){
-    return DataPalUserSession.fromObject(object)
+  newUserSession(){
+    return new DataPalUserSession(this)
+  }
+  userSessionFromObject(object){
+    return new DataPalUserSession(this, object)
   }
 }
 
 
 class DataPalUserSession {
 
-  static fromObject({ cookie }){
-    return new this({ cookie })
-  }
-
-  constructor({ cookie } = {}) {
+  constructor(client, { cookie } = {}) {
+    this.client = client
     this.cookie = cookie
     // const cookieJar = new fetchCookie.toughCookie.CookieJar()
     this.fetch = fetchCookie(fetch, {
@@ -82,6 +82,9 @@ class DataPalUserSession {
    *   a file editor
    */
 
+  async requestDocument(){
+
+  }
 
 
   // PRIVATISH

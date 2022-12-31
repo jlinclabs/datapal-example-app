@@ -1,3 +1,13 @@
+
+<div class="p-2">
+  {{> avatar src=account.avatar alt=account.displayName}}
+  <span>{{account.displayName}}</span>
+  <a
+    href="{{account.urls.account}}"
+    class="link"
+  >DataPal Account</a>
+</div>
+
 <div class="container px-4" style="">
   <pre><code>{{toJSON account}}</code></pre>
 </div>
