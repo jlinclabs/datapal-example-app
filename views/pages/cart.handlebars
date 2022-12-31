@@ -1,13 +1,37 @@
-<div class="container px-4 text-center" style="">
-  <h1 class="mt-4">Your Cart</h1>
+<div class="container px-4" style="">
+  <h1 class="mt-4 text-center">Your Cart</h1>
   {{#each productsInCart}}
     {{> productCard product=this }}
   {{/each}}
 
 
   <div>
-    {{#if shippingAddress}}
-      <pre><code>{{toJSON shippingAddress}}</code></pre>
+    {{#if shippingAddressDocument}}
+      <div>
+        <p class="">You've Shared this Shipping Address with us:</p>
+
+        <div style="text-align: left; display: inline-block; ">
+          {{#with shippingAddressDocument.value }}
+          <div>{{recipientName}}</div>
+          <div>{{streetAddressLine1}}</div>
+          <div>{{streetAddressLine2}}</div>
+          <div>
+            <span>{{addressLocality}}</span>
+            <span>{{addressRegion}}</span>
+          </div>
+          <div>
+            <span>{{addressCountry}}</span>
+            <span>{{postalCode}}</span>
+          </div>
+          {{/with}}
+        </div>
+
+        <p><a href="{{shippingAddressDocument.uri}}" class="link">
+          View or Edit the document on DataPal
+        </a></p>
+
+<!--        <pre><code>{{toJSON shippingAddressDocument.value}}</code></pre>-->
+      </div>
     {{else}}
       {{#> datapalButton href="/datapal/select-shipping-address" }}
         Provide a shipping address

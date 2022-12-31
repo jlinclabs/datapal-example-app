@@ -37,9 +37,13 @@ routes.post('/cart/add/:productId', async (req, res) => {
 routes.get('/cart', async (req, res) => {
   const cart = req.session.cart || []
   const productsInCart = cart.map(id => res.locals.products.find(p => p.id === id))
+  const shippingAddressDocument = await req.datapal.findDocument({
+    documentType: 'shippingAddress',
+  })
   res.render('pages/cart', {
     cart,
     productsInCart,
+    shippingAddressDocument,
   })
 })
 

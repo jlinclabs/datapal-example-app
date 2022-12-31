@@ -1,3 +1,4 @@
+import { URL } from 'node:url'
 import fetch from 'node-fetch'
 import fetchCookie from 'fetch-cookie'
 
@@ -8,6 +9,7 @@ console.log(
 
 export default class DataPalApp {
   constructor(options) {
+    this.origin = options.origin
     this.documentTypes = options.documentTypes || {}
   }
   newUserSession(){
@@ -21,9 +23,10 @@ export default class DataPalApp {
 
 class DataPalUserSession {
 
-  constructor(client, { cookie } = {}) {
+  constructor(client, { cookie, appAccountId } = {}) {
     this.client = client
     this.cookie = cookie
+    this.appAccountId = appAccountId
     // const cookieJar = new fetchCookie.toughCookie.CookieJar()
     this.fetch = fetchCookie(fetch, {
       getCookieString: async () => {
@@ -36,24 +39,28 @@ class DataPalUserSession {
   }
 
   toObject(){
-    return {cookie: this.cookie}
+    return {
+      cookie: this.cookie,
+      appAccountId: this.appAccountId,
+    }
   }
 
   async login(appAccountLoginToken) {
-    const res = await this.do('session.login', { appAccountLoginToken })
-    console.log('logged in?', res)
+    const { appAccountId } = await this.do('session.login', { appAccountLoginToken })
+    this.appAccountId = appAccountId
   }
 
   async logout() {
     try{
       await this.do('session.logout', {})
+      delete this.appAccountId
     }catch(error){
       console.error(error)
     }
     delete this.cookie
   }
 
-  get isLoggedIn(){ return !!(this.cookie /* TODO check harder */) }
+  get isLoggedIn(){ return !!this.appAccountId }
 
   async whoami(){
     if (!this.isLoggedIn) return
@@ -65,6 +72,26 @@ class DataPalUserSession {
     }
   }
 
+  async findDocument({ documentType }){
+    const documentTypeSpec = this.client.documentTypes[documentType]
+    const documentTypeId = documentTypeSpec.versions[0]
+    const { documents } = await this.get('documents.forType', { documentTypeId })
+    console.log('documents', documents)
+    return documents[0]
+  }
+
+  requestDocumentRedirect({ documentType, purpose, returnTo, read = true, write }){
+    const url = new URL(this.client.origin)
+    url.pathname = `/accounts/${this.appAccountId}/documents/request`
+    const documentTypeSpec = this.client.documentTypes[documentType]
+    // TODO encrypt it up here
+    url.searchParams.set('type', documentTypeSpec.versions[0])
+    url.searchParams.set('purpose', purpose)
+    url.searchParams.set('returnTo', returnTo)
+    if (read) url.searchParams.set('read', 1)
+    if (write) url.searchParams.set('write', 1)
+    return url
+  }
   /**
    *
    * we need a way of requesting one instance of a document type
@@ -102,7 +129,7 @@ class DataPalUserSession {
 
   async apiFetch(method, path, body, tries = 0){
     try {
-      const url = `${process.env.DATAPAL_ORIGIN}/api/v1/${path}`
+      const url = `${this.client.origin}/api/v1/${path}`
       const options = {
         method,
         headers: {

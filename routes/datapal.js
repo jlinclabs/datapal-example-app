@@ -15,6 +15,7 @@ routes.use(async (req, res, next) => {
     session: req.session,
     user: req.user,
   })
+  // TODO always make a datapal and use res.datapal.isLoggedIn ?
   if (req.user){
     req.datapal = dataPalApp.userSessionFromObject(req.user)
     res.locals.user = await req.datapal.whoami()
@@ -94,4 +95,20 @@ routes.get('/logout', async (req, res, next) => {
 routes.get('/datapal/select-shipping-address', (req, res, next) => {
   // redirect to datapal request read access to a shipping address document
   // req.datapal.
+  const redirectUrl = req.datapal.requestDocumentRedirect({
+    documentType: 'shippingAddress',
+    purpose: 'So we can ship you 🍷 😃',
+    read: true,
+    returnTo: '/datapal/select-shipping-address/callback'
+  })
+  console.log({ redirectUrl })
+  res.redirect(redirectUrl)
+})
+
+routes.get('/datapal/select-shipping-address/callback', (req, res, next) => {
+  const { documentId } = req.query
+  res.json({
+    params: req.params,
+    query: req.query,
+  })
 })
