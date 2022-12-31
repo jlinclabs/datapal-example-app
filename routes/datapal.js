@@ -99,16 +99,17 @@ routes.get('/datapal/select-shipping-address', (req, res, next) => {
     documentType: 'shippingAddress',
     purpose: 'So we can ship you 🍷 😃',
     read: true,
-    returnTo: '/datapal/select-shipping-address/callback'
+    // returnTo: '/datapal/select-shipping-address/callback'
+    returnTo: '/cart'
   })
   console.log({ redirectUrl })
   res.redirect(redirectUrl)
 })
 
-routes.get('/datapal/select-shipping-address/callback', (req, res, next) => {
-  const { documentId } = req.query
-  res.json({
-    params: req.params,
-    query: req.query,
-  })
-})
+// routes.get('/datapal/select-shipping-address/callback', (req, res, next) => {
+//   const { documentId } = req.query
+//   res.json({
+//     params: req.params,
+//     query: req.query,
+//   })
+// })
