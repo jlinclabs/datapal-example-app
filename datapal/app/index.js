@@ -46,13 +46,16 @@ class DataPalUserSession {
   }
 
   async login(appAccountLoginToken) {
-    const { appAccountId } = await this.do('session.login', { appAccountLoginToken })
+    const { appAccountId } = await this.do(
+      'apps.login',
+      { appAccountLoginToken }
+    )
     this.appAccountId = appAccountId
   }
 
   async logout() {
     try{
-      await this.do('session.logout', {})
+      await this.do('apps.logout', {})
       delete this.appAccountId
     }catch(error){
       console.error(error)
@@ -65,7 +68,7 @@ class DataPalUserSession {
   async whoami(){
     if (!this.isLoggedIn) return
     try {
-      return await this.get('session.get')
+      return await this.get('appAccounts.getCurrentUser')
     }catch(error){
       console.error(`DataPal error`, error)
       delete this.cookie
@@ -75,7 +78,7 @@ class DataPalUserSession {
   async findDocument({ documentType }){
     const documentTypeSpec = this.client.documentTypes[documentType]
     const documentTypeId = documentTypeSpec.versions[0]
-    const { documents } = await this.get('documents.forType', { documentTypeId })
+    const documents = await this.get('documents.getByType', { documentTypeId })
     console.log('documents', documents)
     return documents[0]
   }
@@ -139,7 +142,7 @@ class DataPalUserSession {
         },
         body: body ? JSON.stringify(body) : undefined,
       }
-      console.log('🐶 DATAPAL FETCH', { url, ...options })
+      console.log('🐶 DATAPAL FETCH', { url, options })
       const res = await this.fetch(url, options)
       if (res.status === 502) {
         throw new Error(`API server looks down or you're offline`)
@@ -158,6 +161,8 @@ class DataPalUserSession {
       // }
       const {result, error} = await res.json()
       if (error) throw new Error(error.message)
+      console.log('🐶 DATAPAL FETCH', { url, options, result })
+
       return result || null
     }catch(error){
       error.message = `DataPal Request Error: ${error.message}`
