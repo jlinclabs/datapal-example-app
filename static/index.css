@@ -1,0 +1,49 @@
+:root {
+  --color-lime: #89CB43;
+  --color-green: #33540C;
+  --color-black: #0B2027;
+  --color-slate: #3A606E;
+  --color-blue-green: #75B9BE;
+  --color-dark-blue: #031D44;
+  --color-light-blue: #79A9D1;
+  --color-blue: #04395E;
+  /*--color-purple: #82204A;*/
+  /*--color-teal: #558C8C;*/
+  /*--color-light-blue: #EFF7FF;*/
+  /*--color-light-blue2: #5BC0EB;*/
+  /*--color-orange: #E4572E;*/
+  /*--color-blue: #067BC2;*/
+}
+
+
+html, body {
+  --body-background-color: var(--color-light-blue);
+  background-color: var(--body-background-color);
+  color: var(--color-black);
+  /*background-color: #79A9D1;*/
+  /*color: white;*/
+}
+
+.boosable-banner {
+  background-image: url("/logo/boosable-banner.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-height: 300px;
+  max-width: calc(100vw - 32px)
+}
+
+.step {
+  border: 1px dotted black;
+  padding: 16px;
+  margin-top: 40px;
+  border-radius: 5px;
+}
+.step > h1 {
+  line-height: 40px;
+  margin: -40px 0 16px 0;
+}
+.step > h1 > span {
+  padding: 5px;
+  background-color: var(--body-background-color);
+}
