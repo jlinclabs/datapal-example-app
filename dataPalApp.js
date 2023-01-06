@@ -20,6 +20,14 @@ const dataPalApp = new DataPalApp({
       versions: [
         'bagaaierad6f6uuqbyiu5sdgnvrqo3uevcnnbp77dkjrhe7q2xgahkqaggana',
       ]
+    },
+    proofYouCanBuyAlcohol: {
+      permissions: {
+        read: true,
+      },
+      versions: [
+        'bagaaierafc5l3gtivkdjwwbw6mps3gexhv2okq3srwrzh52ccqzgbwmlijxa',
+      ]
     }
   },
 })

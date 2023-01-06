@@ -52,7 +52,9 @@
                 </div>
               </div>
             {{else}}
-              <a class="btn btn-primary" href="/login">Login via DataPal</a>
+              {{#> datapalButton href="/login" }}
+                Login via DataPal
+              {{/ datapalButton }}
             {{/if}}
           </div>
         </div>

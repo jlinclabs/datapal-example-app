@@ -29,7 +29,7 @@
   </div>
 
   <div>
-    <h1 class="mt-4 text-center">Your Shipping Address</h1>
+    <h2 class="mt-4 text-center">Your Shipping Address</h2>
     <p class="mt-4 text-center">
       Your shipping address is data stored in YOUR Data Pal.
       {{#if shippingAddressDocument}}
@@ -63,11 +63,38 @@
       </div>
     {{else}}
       <div class="text-center">
-        {{#> datapalButton href="/datapal/select-shipping-address?returnTo=/cart" }}
+        {{#> datapalButton href="/select-shipping-address?returnTo=/cart" }}
           Provide a shipping address
         {{/ datapalButton }}
       </div>
 
     {{/if}}
+  </div>
+
+
+
+  <div>
+    <h2 class="mt-4 text-center">Proof you can drink</h2>
+    <div style="max-width: 400px; margin: 0 auto;">
+      <p class="mt-4 text-center">
+        Proof of your eligibility to purchase alcohol is provided securely and pseudononymously by
+        the these 2rd parties.
+      </p>
+
+      {{#if proofYouCanDrinkDocument}}
+        <p class="mt-4 text-center">
+          The resulting proof is stored in YOUR Data Pal document store.
+        </p>
+        <p>
+          <a href="{{proofYouCanDrinkDocument.uri}}" class="link">View or edit it here</a>
+        </p>
+      {{else}}
+        <div class="text-center">
+          {{#> boosableButton href="/provide-proof-you-can-buy-alcohol?returnTo=/cart" }}
+            Provide proof you can buy alcohol
+          {{/ boosableButton }}
+        </div>
+      {{/if}}
+    </div>
   </div>
 </div>
