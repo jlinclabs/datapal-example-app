@@ -48,15 +48,16 @@ export function requireAuth(req, res, next){
 }
 
 routes.get('/login', (req, res) => {
-  // let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
-  let referer = req.get('Referer')
-  let returnTo
-  if (referer) {
-    referer = new URL(referer)
-    returnTo = referer.toString().split(referer.origin)[1]
-    // url += '?returnTo=' + encodeURIComponent(returnTo)
-  }
-  res.redirect(getDataPalLoginUrl({ returnTo }))
+  // // let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
+  // let referer = req.get('Referer')
+  // let returnTo
+  // if (referer) {
+  //   referer = new URL(referer)
+  //   returnTo = referer.toString().split(referer.origin)[1]
+  //   // url += '?returnTo=' + encodeURIComponent(returnTo)
+  // }
+  // res.redirect(getDataPalLoginUrl({ returnTo }))
+  res.redirect(getDataPalLoginUrl())
 })
 // routes.get('/login', passport.authenticate('oauth2'))
 
@@ -79,7 +80,10 @@ routes.post('/datapal/auth/callback', async (req, res) => {
   await datapal.login(loginToken)
   const whoami = await datapal.whoami()
   const user = datapal.toObject()
+  const { cookie, passport, ...otherSessionVariables } = req.session
+  console.log({ otherSessionVariables })
   await promisify(req.login.bind(req))(user)
+  Object.assign(req.session, otherSessionVariables)
   res.render('redirect', {to: returnTo})
 })
 

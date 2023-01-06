@@ -7,33 +7,36 @@ const routes = new Router()
 routes.use(authRoutes)
 
 routes.get('/', async (req, res) => {
-  if (req.query.returnTo) req.session.returnTo = req.query.returnTo
-  console.log('RETURN TO', req.session.returnTo)
+  const returnTo = req.query.returnTo
   const referer = req.get('Referer')
-  if (referer && req.datapal){
-    const host = new URL(referer).hostname
-    req.session.shareWithApp = await req.datapal.findApp({ host })
-    console.log('shareWithApp', req.session.shareWithApp)
-  }
-  // if (req.query.shareWith){
-  // }
+  console.log('🎆', { referer, returnTo })
 
-  let shoppingListDocument
+  if (referer && returnTo){
+    const host = new URL(referer).hostname
+    if (new URL(returnTo).hostname === host){
+      req.session.shareWithApp = { host, returnTo }
+    }
+  }
+
+  const locals = {...res.locals}
+
+  if (req.session.shareWithApp && req.datapal) {
+    locals.shareWithApp = await req.datapal.findApp({
+      host: req.session.shareWithApp.host,
+    })
+    locals.shareWithAppUrl = req.session.shareWithApp.returnTo
+  }
+
   if (req.datapal) {
-    shoppingListDocument = await req.datapal.findDocument({
+    locals.shoppingListDocument = await req.datapal.findDocument({
       documentType: 'proofYouCanDrink',
     })
   }
-  const locals = {
-    ...res.locals,
-    returnTo: req.session.returnTo,
-    shareWithApp: req.session.shareWithApp,
-    shoppingListDocument,
-    uploadedProof: !!req.session.uploadedProof,
-  }
+  locals.uploadedProof = !!req.session.uploadedProof
   locals.step1Complete = !!locals.user
   locals.step2Complete = !!(locals.step1Complete && locals.uploadedProof)
-  locals.step3Complete = !!(locals.step2Complete && shoppingListDocument)
+  locals.step3Complete = !!(locals.step2Complete && locals.shoppingListDocument)
+  console.log('🎆', {locals, session: req.session })
   res.render('pages/home', locals)
 })
 
@@ -46,7 +49,7 @@ routes.get('/create', requireAuth, async (req, res) => {
   const redirectUrl = req.datapal.requestDocumentRedirect({
     documentType: 'proofYouCanDrink',
     purpose: 'So we can give you your digitial proof.',
-    returnTo: req.query.returnTo || '/',
+    returnTo: '/',
   })
   res.redirect(redirectUrl)
 })

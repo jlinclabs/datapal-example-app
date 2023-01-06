@@ -10,7 +10,7 @@
       has been written to your Data Pal document store.
     </p>
     {{#if shareWithApp}}
-      <a href="https://{{shareWithApp.host}}{{returnTo}}?id={{shoppingListDocument.id}}" class="btn btn-success">
+      <a href="{{shareWithAppUrl}}?id={{shoppingListDocument.id}}" class="btn btn-success">
         Share this proof with {{shareWithApp.name}}
       </a>
     {{else}}
