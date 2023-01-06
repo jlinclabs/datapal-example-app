@@ -77,10 +77,13 @@ class DataPalUserSession {
 
   async findDocument({ documentType }){
     const documentTypeSpec = this.client.documentTypes[documentType]
+    if (!documentTypeSpec) throw new Error(
+      `unable to find document type "${documentType}"`
+    )
     const documentTypeId = documentTypeSpec.versions[0]
     const documents = await this.get('documents.getByType', { documentTypeId })
     console.log('documents', documents)
-    return documents[0]
+    return documents && documents[0]
   }
 
   requestDocumentRedirect({ documentType, purpose, returnTo, read = true, write }){
@@ -95,27 +98,10 @@ class DataPalUserSession {
     if (write) url.searchParams.set('write', 1)
     return url
   }
-  /**
-   *
-   * we need a way of requesting one instance of a document type
-   * the plan was to
-   *   1. redirect to datapal with the details of the docment requested
-   *   2. let the user select one and datapal will redirect back to us
-   *
-   *   what if apps want to create their own document?
-   *   should we have them redirect to datapal for that?
-   *
-   *   we are going to need to be able to make empty documents
-   *
-   *   when an app requests a document and the user gives them one
-   *   is it the app's responsability to remember that? if you're
-   *   a file editor
-   */
 
-  async requestDocument(){
-
+  async updateDocument(id, value){
+    return await this.do('documents.update', {id, value})
   }
-
 
   // PRIVATISH
 

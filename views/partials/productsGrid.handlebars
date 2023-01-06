@@ -20,6 +20,10 @@
     justify-items: center;
 ">
   {{#each products}}
-    {{> productCard product=this }}
+    {{#> productCard product=this }}
+      <form action="/cart/add/{{id}}" method="get">
+        <button type="submit" class="btn btn-primary">ADD TO CART</button>
+      </form>
+    {{/ productCard }}
   {{/each}}
 </div>

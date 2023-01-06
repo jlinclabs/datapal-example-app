@@ -34,6 +34,14 @@ export function getDataPalLoginUrl(searchParams){
   return url
 }
 
+export function requireAuth(req, res, next){
+  if (req.user && req.datapal.isLoggedIn) return next()
+  const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
+  console.log({ returnTo })
+  res.redirect(getDataPalLoginUrl({ returnTo }))
+  // res.render('pages/unauthorized')
+}
+
 routes.get('/login', (req, res) => {
   // let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
   let referer = req.get('Referer')
@@ -90,20 +98,6 @@ routes.get('/logout', async (req, res, next) => {
     // res.redirect('/')
     res.render('redirect', {to: '/'})
   })
-})
-
-routes.get('/datapal/select-shipping-address', (req, res, next) => {
-  // redirect to datapal request read access to a shipping address document
-  // req.datapal.
-  const redirectUrl = req.datapal.requestDocumentRedirect({
-    documentType: 'shippingAddress',
-    purpose: 'So we can ship you 🍷 😃',
-    read: true,
-    // returnTo: '/datapal/select-shipping-address/callback'
-    returnTo: '/cart'
-  })
-  console.log({ redirectUrl })
-  res.redirect(redirectUrl)
 })
 
 // routes.get('/datapal/select-shipping-address/callback', (req, res, next) => {
