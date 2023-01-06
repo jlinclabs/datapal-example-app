@@ -42,7 +42,7 @@ routes.get('/select-shipping-address', (req, res, next) => {
 routes.get('/provide-proof-you-can-buy-alcohol', (req, res, next) => {
   const url = new URL(process.env.BOOSABLE_ORIGIN)
   url.pathname = '/'
-  url.searchParams.set('returnTo', `/boosable/callback`)
+  url.searchParams.set('returnTo', `${process.env.APP_ORIGIN}/boosable/callback`)
   res.redirect(`${url}`)
 
   // const redirectUrl = req.datapal.requestDocumentRedirect({
