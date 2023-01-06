@@ -82,7 +82,6 @@ class DataPalUserSession {
     )
     const documentTypeId = documentTypeSpec.versions[0]
     const documents = await this.get('documents.getByType', { documentTypeId })
-    console.log('documents', documents)
     return documents && documents[0]
   }
 
@@ -128,7 +127,6 @@ class DataPalUserSession {
         },
         body: body ? JSON.stringify(body) : undefined,
       }
-      console.log('🐶 DATAPAL FETCH', { url, options })
       const res = await this.fetch(url, options)
       if (res.status === 502) {
         throw new Error(`API server looks down or you're offline`)
@@ -147,7 +145,6 @@ class DataPalUserSession {
       // }
       const {result, error} = await res.json()
       if (error) throw new Error(error.message)
-      console.log('🐶 DATAPAL FETCH', { url, options, result })
 
       return result || null
     }catch(error){

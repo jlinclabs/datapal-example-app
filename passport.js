@@ -26,7 +26,6 @@ passport.serializeUser(function(user, cb) {
 })
 
 passport.deserializeUser(function(user, cb) {
-  console.log('passport.deserializeUser', { user })
   process.nextTick(function() {
     cb(null, JSON.parse(user))
   })

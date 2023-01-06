@@ -9,24 +9,20 @@ export default routes
 routes.use(passport.authenticate('session'))
 
 routes.use(async (req, res, next) => {
-
-
-  console.log(`${req.protocol} ${req.method} ${req.url}`, {
+  console.log(`${req.method} ${req.url}`, {
     body: req.body,
     query: req.query,
     params: req.params,
-    session: req.session,
-    user: req.user,
+    // session: req.session,
+    // user: req.user,
   })
   // TODO always make a datapal and use res.datapal.isLoggedIn ?
-  console.log('👤', { user: req.user })
   if (req.user){
     req.datapal = dataPalApp.userSessionFromObject(req.user)
     const user = await req.datapal.whoami()
     if (user){
       res.locals.user = user
     }else{
-      console.log('FAILED TO LOAD USER FROM DATA PAL. Logging Out!')
       await promisify(req.logout.bind(req))()
     }
   }
@@ -47,9 +43,7 @@ export function getDataPalLoginUrl(searchParams){
 export function requireAuth(req, res, next){
   if (req.user && req.datapal.isLoggedIn) return next()
   const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
-  console.log({ returnTo })
   res.redirect(getDataPalLoginUrl({ returnTo }))
-  // res.render('pages/unauthorized')
 }
 
 routes.get('/login', (req, res) => {
@@ -71,9 +65,6 @@ routes.get('/auth/callback',
     // failureMessage: true,
   }),
   function(req, res) {
-    console.log('🚢 GET /auth/callback', {
-      query: req.query,
-    })
     // Successful authentication, redirect home.
     res.redirect('/');
   }
@@ -86,20 +77,8 @@ routes.post('/datapal/auth/callback', async (req, res) => {
   const datapal = dataPalApp.newUserSession()
   await datapal.login(loginToken)
   const whoami = await datapal.whoami()
-  console.log({ whoami })
-  console.log({ cookie: datapal.cookie })
-
   const user = datapal.toObject()
-  console.log('LOGINING IN AS', { user })
-  // await promisify(req.login.bind(req))(user)
-
-  await new Promise((resolve, reject) => {
-    req.login(user, function(error) {
-      if (error) return reject(error)
-      resolve()
-    })
-  })
-
+  await promisify(req.login.bind(req))(user)
   res.render('redirect', {to: returnTo})
 })
 
