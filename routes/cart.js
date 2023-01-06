@@ -11,12 +11,13 @@ routes.use('/cart', requireAuth, async (req, res, next) => {
     documentType,
   })
   if (req.shoppingListDocument) return next()
+  console.log('~~~~req.url', req.url)
   const redirectUrl = req.datapal.requestDocumentRedirect({
     documentType,
     purpose: 'So we can store the 🍷 you want 😃',
     read: true,
     write: true,
-    returnTo: req.url,
+    returnTo: '/cart' + req.url,
   })
   res.redirect(redirectUrl)
 })
