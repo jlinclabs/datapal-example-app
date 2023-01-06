@@ -26,7 +26,7 @@ const dataPalApp = new DataPalApp({
         read: true,
       },
       versions: [
-        'bagaaierafc5l3gtivkdjwwbw6mps3gexhv2okq3srwrzh52ccqzgbwmlijxa',
+        'bagaaierapghfkom6cgmv4bi5vyc5mx2hvfms3cqwytgh23etescp2ckorxsa',
       ]
     }
   },
