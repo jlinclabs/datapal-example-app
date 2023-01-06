@@ -75,6 +75,10 @@ class DataPalUserSession {
     }
   }
 
+  async findApp({ host }) {
+    return await this.get('apps.getByHost', { host })
+  }
+
   async findDocument({ documentType }){
     const documentTypeSpec = this.client.documentTypes[documentType]
     if (!documentTypeSpec) throw new Error(
@@ -92,7 +96,7 @@ class DataPalUserSession {
     // TODO encrypt it up here
     url.searchParams.set('type', documentTypeSpec.versions[0])
     url.searchParams.set('purpose', purpose)
-    url.searchParams.set('returnTo', returnTo)
+    if (returnTo) url.searchParams.set('returnTo', returnTo)
     if (read) url.searchParams.set('read', 1)
     if (write) url.searchParams.set('write', 1)
     return url

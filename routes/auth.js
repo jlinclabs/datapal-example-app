@@ -20,6 +20,7 @@ routes.use(async (req, res, next) => {
   if (req.user){
     req.datapal = dataPalApp.userSessionFromObject(req.user)
     const user = await req.datapal.whoami()
+    console.log({ user })
     if (user){
       res.locals.user = user
     }else{

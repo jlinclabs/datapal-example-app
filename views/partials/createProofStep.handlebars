@@ -1,0 +1,25 @@
+{{#> step title="3. Create Digitial Document" complete=step3Complete }}
+
+  <!-- done -->
+  {{# if step3Complete}}
+    <p>
+      Done! Your new
+      <a href="{{shoppingListDocument.uri}}" class="link">
+        digital proof you can drink
+      </a>
+      has been written to your Data Pal document store.
+    </p>
+    {{#if shareWithApp}}
+      <a href="https://{{shareWithApp.host}}{{returnTo}}?id={{shoppingListDocument.id}}" class="btn btn-success">
+        Share this proof with {{shareWithApp.name}}
+      </a>
+    {{else}}
+      <a href="{{shoppingListDocument.uri}}" class="btn btn-success">check it out</a>
+    {{/if}}
+
+  <!-- out turn -->
+  {{else if step2Complete}}
+    {{#> datapalButton href="/create" }}Create digitial proof{{/datapalButton}}
+  {{/if}}
+
+{{/step}}

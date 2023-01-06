@@ -1,0 +1,19 @@
+{{#> step title="2. Upload proof" complete=step2Complete }}
+
+  {{#if uploadedProof}}
+
+    Fake proof uploaded!
+  {{else}}
+    <div>
+      <p>
+        <small><i>
+          This step is fake. Just click the button to simulate uploading documents.
+        </i></small>
+      </p>
+      <form action="/upload-proof" method="post">
+        <input type="submit" value="Upload Proof" class="btn btn-primary"/>
+      </form>
+    </div>
+
+  {{/if}}
+{{/step}}

@@ -4,21 +4,13 @@ const dataPalApp = new DataPalApp({
   origin: process.env.DATAPAL_ORIGIN,
   documentTypes: {
     // shopping list
-    shoppingList: {
+    proofYouCanDrink: {
       permissions: {
         read: true,
         write: true,
       },
       versions: [
-        'bagaaierah3gsemlfybo6xtgvknspozckeso3t5vskg7ivr7wrm4zsmzveqaq',
-      ]
-    },
-    shippingAddress: {
-      permissions: {
-        read: true,
-      },
-      versions: [
-        'bagaaierad6f6uuqbyiu5sdgnvrqo3uevcnnbp77dkjrhe7q2xgahkqaggana',
+        'bagaaierafc5l3gtivkdjwwbw6mps3gexhv2okq3srwrzh52ccqzgbwmlijxa',
       ]
     }
   },

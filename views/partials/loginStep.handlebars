@@ -1,0 +1,20 @@
+{{#> step title="1. Login to Data Pal" complete=step1Complete }}
+  {{#unless user}}
+    {{#> datapalButton href="/login" }}
+      Login via DataPal
+    {{/ datapalButton }}
+  {{else}}
+    <div style="display: flex; align-items: center;">
+      <span>Logged in as:&nbsp;</span>
+      <a href="{{user.urls.account}}">
+        {{user.displayName}}
+      </a>
+      {{#if user.avatar}}
+        <a href="{{user.urls.account}}" style="margin-left: 7px;">
+          {{> avatar src=user.avatar alt=user.displayName}}
+        </a>
+      {{/if}}
+      <a href="/logout" style="margin-left: 7px;">Logout</a>
+    </div>
+  {{/unless}}
+{{/step}}
