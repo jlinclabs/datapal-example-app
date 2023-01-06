@@ -1,3 +1,4 @@
+import { promisify } from 'node:util'
 import Router from 'express-promise-router'
 import passport from '../passport.js'
 import dataPalApp from '../dataPalApp.js'
@@ -8,6 +9,8 @@ export default routes
 routes.use(passport.authenticate('session'))
 
 routes.use(async (req, res, next) => {
+
+
   console.log(`${req.protocol} ${req.method} ${req.url}`, {
     body: req.body,
     query: req.query,
@@ -16,9 +19,16 @@ routes.use(async (req, res, next) => {
     user: req.user,
   })
   // TODO always make a datapal and use res.datapal.isLoggedIn ?
+  console.log('👤', { user: req.user })
   if (req.user){
     req.datapal = dataPalApp.userSessionFromObject(req.user)
-    res.locals.user = await req.datapal.whoami()
+    const user = await req.datapal.whoami()
+    if (user){
+      res.locals.user = user
+    }else{
+      console.log('FAILED TO LOAD USER FROM DATA PAL. Logging Out!')
+      await promisify(req.logout.bind(req))()
+    }
   }
   res.locals.process = {
     env: process.env,
@@ -81,6 +91,8 @@ routes.post('/datapal/auth/callback', async (req, res) => {
 
   const user = datapal.toObject()
   console.log('LOGINING IN AS', { user })
+  // await promisify(req.login.bind(req))(user)
+
   await new Promise((resolve, reject) => {
     req.login(user, function(error) {
       if (error) return reject(error)

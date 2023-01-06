@@ -18,12 +18,12 @@ routes.use((req, res, next) => {
   next()
 })
 
+routes.use(authRoutes)
+
 routes.get('/', async (req, res) => {
   res.render('pages/home')
 })
 
-
-routes.use(authRoutes)
 routes.use(cartRoutes)
 
 routes.get('/account', requireAuth, async (req, res) => {
