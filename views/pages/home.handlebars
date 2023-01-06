@@ -1,6 +1,6 @@
 <div class="container px-4 text-center" style="">
   <div class="container-lg" style="margin: 0 auto; width: fit-content;">
-    <img src="/favicon/android-chrome-512x512.png" style="margin-right: -30%" />
+    <img src="/favicon/android-chrome-512x512.png" style="" />
   </div>
   <h1 class="mt-4">Can you boose?</h1>
   <h2 class="mt-4">Boosable can proove it!</h2>
@@ -14,4 +14,51 @@
       When you signup for Boosable your account data is stored in your Data Pal data store.
     </p>
   </div>
+
+  {{#unless user}}
+    {{#> datapalButton href="/login" }}
+      Login via DataPal
+    {{/ datapalButton }}
+  {{else}}
+    <div class="card" style="margin: 0 auto; max-width: fit-content">
+      <div class="card-body" style="display: flex; align-items: center;">
+        <h4 style="margin-right: 16px;">Data Pal Account</h4>
+        <div>
+          <div>
+            {{user.displayName}}
+            {{#if user.avatar}}
+              {{> avatar src=user.avatar alt=user.displayName}}
+            {{/if}}
+          </div>
+          <div>
+            <a href="{{user.urls.user}}">Account</a>
+            &nbsp;•&nbsp;
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    {{#unless uploadedProof}}
+      <div class="container-lg" style="margin: 2rem auto; max-width: 600px;">
+        <h3>Upload Proof of Identity and Age</h3>
+        <p>
+          <small><i>
+            This step is fake. Just click the button to simulate uploading documents.
+          </i></small>
+        </p>
+        <form action="/upload-proof" method="post">
+          <input type="submit" value="Upload Proof" class="btn btn-primary"/>
+        </form>
+      </div>
+
+    {{else}}
+      <div class="card" style="margin: 0 auto; max-width: fit-content">
+        <div class="card-body" style="display: flex; align-items: center;">
+          <h4 style="margin-right: 16px;">Proof received</h4>
+        </div>
+      </div>
+    {{/unless}}
+  {{/unless}}
 </div>

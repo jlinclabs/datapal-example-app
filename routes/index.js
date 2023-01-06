@@ -6,7 +6,7 @@ const routes = new Router()
 
 
 routes.use((req, res, next) => {
-  // res.locals.products = products
+  res.locals.uploadedProof = !!req.session.uploadedProof
   next()
 })
 
@@ -16,10 +16,9 @@ routes.get('/', async (req, res) => {
   res.render('pages/home')
 })
 
-routes.get('/account', requireAuth, async (req, res) => {
-  res.render('pages/account', {
-    account: res.locals.user,
-  })
+routes.post('/upload-proof', requireAuth, async (req, res) => {
+  req.session.uploadedProof = true
+  res.render('redirect', {to: '/'})
 })
 
 
