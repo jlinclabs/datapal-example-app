@@ -42,7 +42,7 @@ routes.get('/select-shipping-address', (req, res, next) => {
 routes.get('/provide-proof-you-can-buy-alcohol', (req, res, next) => {
   const url = new URL(process.env.BOOSABLE_ORIGIN)
   url.pathname = '/'
-  url.searchParams.set('returnTo', `${process.env.APP_ORIGIN}/boosable/callback`)
+  url.searchParams.set('returnTo', `/boosable/callback`)
   res.redirect(`${url}`)
 
   // const redirectUrl = req.datapal.requestDocumentRedirect({
@@ -51,6 +51,17 @@ routes.get('/provide-proof-you-can-buy-alcohol', (req, res, next) => {
   //   returnTo: req.query.returnTo,
   // })
   // res.redirect(redirectUrl)
+})
+
+routes.get('/boosable/callback', (req, res, next) => {
+  const documentId = req.query.id
+  const redirectUrl = req.datapal.requestDocumentRedirect({
+    documentType: 'proofYouCanBuyAlcohol',
+    documentId,
+    purpose: 'So we can ship you 🍷 😃',
+    returnTo: '/cart',
+  })
+  res.redirect(redirectUrl)
 })
 
 export default routes

@@ -85,14 +85,15 @@ class DataPalUserSession {
     return documents && documents[0]
   }
 
-  requestDocumentRedirect({ documentType, purpose, returnTo }){
+  requestDocumentRedirect({ documentId, documentType, purpose, returnTo }){
     const url = new URL(this.client.origin)
     url.pathname = `/accounts/${this.appAccountId}/documents/request`
     const documentTypeSpec = this.client.documentTypes[documentType]
     // TODO encrypt it up here
     url.searchParams.set('type', documentTypeSpec.versions[0])
     url.searchParams.set('purpose', purpose)
-    url.searchParams.set('returnTo', returnTo)
+    if (documentId) url.searchParams.set('documentId', documentId)
+    if (returnTo) url.searchParams.set('returnTo', returnTo)
     if (documentTypeSpec.permissions.read) url.searchParams.set('read', 1)
     if (documentTypeSpec.permissions.write) url.searchParams.set('write', 1)
     return url

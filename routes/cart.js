@@ -69,12 +69,19 @@ routes.get('/cart', async (req, res) => {
         .find(p => p.id === item.__wineaboutit_id)
     }))
     .filter(i => i.product)
-  const shippingAddressDocument = await req.datapal.findDocument({
-    documentType: 'shippingAddress',
-  })
+
+  const [
+    shippingAddressDocument,
+    proofYouCanBuyAlcoholDocument,
+  ] = await Promise.all([
+    req.datapal.findDocument({documentType: 'shippingAddress'}),
+    req.datapal.findDocument({documentType: 'proofYouCanBuyAlcohol'}),
+  ])
+
   res.render('pages/cart', {
     cart,
     shoppingListDocument,
     shippingAddressDocument,
+    proofYouCanBuyAlcoholDocument,
   })
 })

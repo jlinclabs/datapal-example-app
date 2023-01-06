@@ -1,8 +1,8 @@
 <div class="container px-4" style="">
   <h1 class="mt-4 text-center">Your Cart</h1>
-  <p class="mt-4 text-center">
-    Your cart is data stored in YOUR Data Pal.
-    <a href="{{shoppingListDocument.uri}}" class="link">View or edit it here</a>
+  <p class="mt-4 text-center small italic">
+    Your cart data is stored in YOUR Data Pal in a document called
+    <a href="{{shoppingListDocument.uri}}" class="link">{{shoppingListDocument.name}}</a>
   </p>
   <div>
     {{#each cart}}
@@ -81,12 +81,12 @@
         the these 2rd parties.
       </p>
 
-      {{#if proofYouCanDrinkDocument}}
+      {{#if proofYouCanBuyAlcoholDocument}}
         <p class="mt-4 text-center">
           The resulting proof is stored in YOUR Data Pal document store.
         </p>
         <p>
-          <a href="{{proofYouCanDrinkDocument.uri}}" class="link">View or edit it here</a>
+          <a href="{{proofYouCanBuyAlcoholDocument.uri}}" class="link">View or edit it here</a>
         </p>
       {{else}}
         <div class="text-center">
