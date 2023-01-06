@@ -1,43 +1,10 @@
 <div class="container px-4 text-center" style="">
-  <h1 class="mt-4">Welcome to Wine About It!</h1>
+  <h1 class="mt-4">Welcome to Boosable!</h1>
   <p class="my-4">
-    Wine about it is a demo app for <a href="{{process.env.DATAPAL_ORIGIN}}">Data Pal</a>. This app
+    Boosable it is a demo app for <a href="{{process.env.DATAPAL_ORIGIN}}">Data Pal</a>. This app
     is intended to show how web apps can use data owned and controlled by the user via Data Pal.
   </p>
   <p class="my-4">
-    When you signup for Wine About It your account data is stored in your Data Pal data store.
+    When you signup for Boosable your account data is stored in your Data Pal data store.
   </p>
-
-  {{> productsGrid }}
-
-  {{!--
-  <div class="mt-4">
-  {{#if user}}
-    <div>
-      <h4>Welcome Back {{user.displayName}}</h4>
-
-      {{#if user.avatar}}
-        <img
-          class="rounded-circle"
-          src="{{user.avatar}}"
-          alt="{{user.displayName}}"
-          height="50px"
-        />
-      {{/if}}
-
-
-      <pre><code>{{toJSON user}}</code></pre>
-    </div>
-  {{else}}
-    <div>
-      <h4>To try it:</h4>
-      <a class="btn btn-primary" href="/login">Login via DataPal</a>
-    </div>
-  {{/if}}
-  </div>
-  --}}
-
 </div>
-
-<hr class="mt-8" />
-<pre><code>{{toJSON debug}}</code></pre>
