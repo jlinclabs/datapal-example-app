@@ -26,10 +26,6 @@ routes.get('/', async (req, res) => {
 
 routes.use(cartRoutes)
 
-routes.get('/account', requireAuth, async (req, res) => {
-  res.render('pages/account')
-})
-
 routes.get('/select-shipping-address', (req, res, next) => {
   const redirectUrl = req.datapal.requestDocumentRedirect({
     documentType: 'shippingAddress',
