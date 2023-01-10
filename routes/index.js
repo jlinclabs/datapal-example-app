@@ -53,6 +53,11 @@ routes.get('/provide-proof-you-can-buy-alcohol', (req, res, next) => {
   // res.redirect(redirectUrl)
 })
 
+routes.post('/datapal/events', (req, res, next) => {
+  console.log('DATAPAL WEB HOOK EVENT', req.body)
+  res.json({})
+})
+
 routes.get('/boosable/callback', (req, res, next) => {
   const documentId = req.query.id
   const redirectUrl = req.datapal.requestDocumentRedirect({

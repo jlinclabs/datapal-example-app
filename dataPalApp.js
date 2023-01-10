@@ -10,7 +10,7 @@ const dataPalApp = new DataPalApp({
         write: true,
       },
       versions: [
-        'bagaaierah3gsemlfybo6xtgvknspozckeso3t5vskg7ivr7wrm4zsmzveqaq',
+        'bagaaierarinpjm5ag5uoiz6cdxvgcjqv7b2fbvsymongbrdbjv4nbnzlvovq',
       ]
     },
     shippingAddress: {
@@ -18,7 +18,7 @@ const dataPalApp = new DataPalApp({
         read: true,
       },
       versions: [
-        'bagaaierad6f6uuqbyiu5sdgnvrqo3uevcnnbp77dkjrhe7q2xgahkqaggana',
+        'bagaaierawbht4eekjxnctz6isvwiabdc3ncot37v2ymuvpvpdriyqvgxwiwa',
       ]
     },
     proofYouCanBuyAlcohol: {
@@ -26,7 +26,7 @@ const dataPalApp = new DataPalApp({
         read: true,
       },
       versions: [
-        'bagaaierapghfkom6cgmv4bi5vyc5mx2hvfms3cqwytgh23etescp2ckorxsa',
+        'bagaaieravf5a6buk2lgfkzqfzjpzvxr2uy7whqhsarg6mvgmjm3m3mwjvzcq',
       ]
     }
   },
