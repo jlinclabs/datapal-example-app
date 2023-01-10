@@ -44,13 +44,6 @@ routes.get('/provide-proof-you-can-buy-alcohol', (req, res, next) => {
   url.pathname = '/'
   url.searchParams.set('returnTo', `${process.env.APP_ORIGIN}/boosable/callback`)
   res.redirect(`${url}`)
-
-  // const redirectUrl = req.datapal.requestDocumentRedirect({
-  //   documentType: 'proofYouCanBuyAlcohol',
-  //   purpose: 'So we know you can legally buy alcohol.',
-  //   returnTo: req.query.returnTo,
-  // })
-  // res.redirect(redirectUrl)
 })
 
 routes.post('/datapal/events', (req, res, next) => {

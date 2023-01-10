@@ -18,10 +18,12 @@
         {{/with}}
         <div class="m-2">
           <form action="/cart/update-quantity" method="post">
-            <input type="number" name="quantity" value="{{quantity}}"/>
-            <input type="hidden" name="productId" value="{{product.id}}"/>
-            <button type="submit" name="action" value="update">update</button>
-            <button type="submit" name="action" value="delete">X</button>
+            <div style="display: flex; gap: 10px;">
+              <input type="number" name="quantity" value="{{quantity}}" class="form-control" style="width: 80px"/>
+              <input type="hidden" name="productId" value="{{product.id}}"/>
+              <button class="btn btn-secondary" type="submit" name="action" value="update">update</button>
+              <button class="btn btn-light" type="submit" name="action" value="delete">X</button>
+            </div>
           </form>
         </div>
       </div>
@@ -36,22 +38,50 @@
         <a href="{{shoppingListDocument.uri}}" class="link">View or edit it here</a>
       {{/if}}
     </p>
+
     {{#if shippingAddressDocument}}
       <div class="text-center">
 
-        <div style="text-align: left; display: inline-block; margin-bottom: 20px">
+        <div style="text-align: left; margin: 20px auto; max-width: fit-content;">
           {{#with shippingAddressDocument.value }}
-          <div>{{recipientName}}</div>
-          <div>{{streetAddressLine1}}</div>
-          <div>{{streetAddressLine2}}</div>
-          <div>
-            <span>{{addressLocality}}</span>
-            <span>{{addressRegion}}</span>
-          </div>
-          <div>
-            <span>{{addressCountry}}</span>
-            <span>{{postalCode}}</span>
-          </div>
+            <div style="display: flex; gap: 10px;">
+              <div class="form-group">
+                <label for="addressRecipientName">Name</label>
+                <input id="addressRecipientName" type="text" class="form-control" value="{{recipientName}}" readOnly>
+              </div>
+              <div class="form-group">
+                <label for="addressRecipientPhone">Phone</label>
+                <input id="addressRecipientPhone" type="phone" class="form-control" value="{{recipientPhoneNumber}}" readOnly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="addressLine1">Address line 1</label>
+              <input id="addressLine1" type="text" class="form-control" value="{{streetAddressLine1}}" readOnly>
+            </div>
+            <div class="form-group">
+              <label for="addressLine2">Address line 2</label>
+              <input id="addressLine2" type="text" class="form-control" value="{{streetAddressLine2}}" readOnly>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div class="form-group">
+                <label for="addressLocality">Locality</label>
+                <input id="addressLocality" type="text" class="form-control" value="{{addressLocality}}" readOnly>
+              </div>
+              <div class="form-group">
+                <label for="addressRegion">Region</label>
+                <input id="addressRegion" type="text" class="form-control" value="{{addressRegion}}" readOnly>
+              </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div class="form-group">
+                <label for="addressCountry">Country</label>
+                <input id="addressCountry" type="text" class="form-control" value="{{addressCountry}}" readOnly>
+              </div>
+              <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                <input id="postalCode" type="text" class="form-control" value="{{postalCode}}" readOnly>
+              </div>
+            </div>
           {{/with}}
         </div>
 
@@ -76,20 +106,18 @@
   <div>
     <h2 class="mt-4 text-center">Proof you can drink</h2>
     <div style="max-width: 400px; margin: 0 auto;">
-      <p class="mt-4 text-center">
-        Proof of your eligibility to purchase alcohol is provided securely and pseudononymously by
-        the these 2rd parties.
-      </p>
-
       {{#if proofYouCanBuyAlcoholDocument}}
-        <p class="mt-4 text-center">
-          The resulting proof is stored in YOUR Data Pal document store.
-        </p>
-        <p>
-          <a href="{{proofYouCanBuyAlcoholDocument.uri}}" class="link">View or edit it here</a>
-        </p>
+        <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+          <img src="/boosable-icon.svg" style="width: 50%; margin: -4px 5px -4px  -4px; "/>
+          <a href={{proofYouCanBuyAlcoholDocument.uri}}>View proof</a>
+        </div>
       {{else}}
         <div class="text-center">
+          <p class="mt-4 text-center">
+            Proof of your eligibility to purchase alcohol is provided securely and pseudononymously by
+            <a href="">Boosable</a>
+          </p>
+
           {{#> boosableButton href="/provide-proof-you-can-buy-alcohol?returnTo=/cart" }}
             Provide proof you can buy alcohol
           {{/ boosableButton }}
@@ -97,4 +125,14 @@
       {{/if}}
     </div>
   </div>
+
+  {{#if shippingAddressDocument}}
+    {{#if proofYouCanBuyAlcoholDocument}}
+      <div class="text-center mt-4">
+        <h1>Ready to ship!</h1>
+        <button class="btn btn-primary">Place Order!</button>
+      </div>
+    {{/if}}
+  {{/if}}
+
 </div>
