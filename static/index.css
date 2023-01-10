@@ -9,10 +9,6 @@ body > div:first-child{
   flex-direction: column;
 }
 
-body > div > nav {
-
-}
-
 body > div > main {
   flex-grow: 1;
   background-color: white;
