@@ -15,6 +15,16 @@
   /*--color-blue: #067BC2;*/
 }
 
+::-moz-selection { /* Code for Firefox */
+  background: var(--color-green);
+  color: var(--color-light-blue);
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-light-blue);
+}
+
 
 html, body {
   --body-background-color: var(--color-light-blue);
@@ -22,6 +32,7 @@ html, body {
   color: var(--color-black);
   /*background-color: #79A9D1;*/
   /*color: white;*/
+
 }
 
 .boosable-banner {
