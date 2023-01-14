@@ -1,7 +1,7 @@
 import { readFile } from 'fs/promises'
 import Router from 'express-promise-router'
 
-import authRoutes, { requireAuth } from './auth.js'
+import authRoutes, { loadDataPalProfile } from './auth.js'
 import cartRoutes from './cart.js'
 
 const routes = new Router()
@@ -20,7 +20,7 @@ routes.use((req, res, next) => {
 
 routes.use(authRoutes)
 
-routes.get('/', async (req, res) => {
+routes.get('/', loadDataPalProfile, async (req, res) => {
   res.render('pages/home')
 })
 

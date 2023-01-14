@@ -1,5 +1,5 @@
 import Router from 'express-promise-router'
-import { requireAuth } from './auth.js'
+import { requireAuth, loadDataPalProfile } from './auth.js'
 
 const routes = new Router()
 export default routes
@@ -57,7 +57,7 @@ routes.post('/cart/update-quantity', async (req, res) => {
   res.render('redirect', { to: returnTo || '/cart' })
 })
 
-routes.get('/cart', async (req, res) => {
+routes.get('/cart', loadDataPalProfile, async (req, res) => {
   // const cart = req.session.cart || []
   // const productsInCart = cart.map(id => res.locals.products.find(p => p.id === id))
   const { shoppingListDocument } = req

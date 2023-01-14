@@ -3,14 +3,21 @@ import DataPalApp from '@datapal/app'
 const dataPalApp = new DataPalApp({
   origin: process.env.DATAPAL_ORIGIN,
   documentTypes: {
-    // shopping list
+    profile: {
+      permissions: {
+        read: true,
+      },
+      versions: [
+        'bagaaieral5us4xmjj7dhamjmzpv3eb4mdzzu3lujdvgcftstezkr4fkjizda'
+      ]
+    },
     shoppingList: {
       permissions: {
         read: true,
         write: true,
       },
       versions: [
-        'bagaaierarinpjm5ag5uoiz6cdxvgcjqv7b2fbvsymongbrdbjv4nbnzlvovq',
+        'bagaaiera3ehjpbcth73qlon57nqvr6b2gpdppsi4egb3nruzrejqttbzrxiq',
       ]
     },
     shippingAddress: {

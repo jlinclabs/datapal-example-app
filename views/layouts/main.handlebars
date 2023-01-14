@@ -31,9 +31,9 @@
               <div>
                 <div class="dropdown">
                   <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{user.displayName}}
-                    {{#if user.avatar}}
-                      {{> avatar src=user.avatar alt=user.displayName}}
+                    <span>{{profile.name}}</span>
+                    {{#if profile.avatar}}
+                      {{> avatar src=profile.avatar alt=profile.name}}
                     {{/if}}
                   </button>
                   <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">

@@ -6,6 +6,38 @@ import dataPalApp from '../dataPalApp.js'
 const routes = new Router()
 export default routes
 
+export function getDataPalLoginUrl(searchParams){
+  const url = new URL(`${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`)
+  if (searchParams)
+    for (const key in searchParams)
+      url.searchParams.set(key, searchParams[key])
+  return url
+}
+
+export function requireAuth(req, res, next){
+  if (req.user && req.datapal.isLoggedIn) return next()
+  const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
+  res.render('redirect', { to: getDataPalLoginUrl({ returnTo }) })
+}
+
+export async function loadDataPalProfile(req, res, next){
+  if (!req.user || !req.datapal.isLoggedIn) return next()
+  const profile = await req.datapal.findDocument({
+    documentType: 'profile'
+  })
+  if (profile) {
+    res.locals.profile = profile.value
+    next()
+  }else{
+    const url = req.datapal.requestDocumentRedirect({
+      documentType: 'profile',
+      purpose: 'So can show your profile to you and ONLY you.',
+      returnTo: req.url, //TODO complete? test!
+    })
+    res.redirect(url)
+  }
+}
+
 routes.use(passport.authenticate('session'))
 
 routes.use(async (req, res, next) => {
@@ -20,6 +52,7 @@ routes.use(async (req, res, next) => {
   if (req.user){
     req.datapal = dataPalApp.userSessionFromObject(req.user)
     const user = await req.datapal.whoami()
+    console.log('WHOAMI!!!', user)
     if (user){
       res.locals.user = user
     }else{
@@ -31,20 +64,6 @@ routes.use(async (req, res, next) => {
   }
   next()
 })
-
-export function getDataPalLoginUrl(searchParams){
-  const url = new URL(`${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`)
-  if (searchParams)
-    for (const key in searchParams)
-      url.searchParams.set(key, searchParams[key])
-  return url
-}
-
-export function requireAuth(req, res, next){
-  if (req.user && req.datapal.isLoggedIn) return next()
-  const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
-  res.redirect(getDataPalLoginUrl({ returnTo }))
-}
 
 routes.get('/login', (req, res) => {
   // let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
