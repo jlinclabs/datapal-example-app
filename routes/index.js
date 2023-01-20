@@ -32,11 +32,13 @@ routes.get('/', async (req, res) => {
       req.datapal.findDocument({documentType: 'profile'}),
       req.datapal.findDocument({documentType: 'proofYouCanDrink'})
     ])
-    locals.profile = profile.value
-    locals.profileUrl = profile.uri
+
     locals.shoppingListDocument = shoppingListDocument
 
-    if (!profile){
+    if (profile) {
+      locals.profile = profile.value
+      locals.profileUrl = profile.uri
+    }else{
       const url = req.datapal.requestDocumentRedirect({
         documentType: 'profile',
         purpose: 'So can show your profile to you and ONLY you.',
