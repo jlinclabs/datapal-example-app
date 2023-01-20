@@ -17,7 +17,7 @@ export function getDataPalLoginUrl(searchParams){
 export function requireAuth(req, res, next){
   if (req.user && req.datapal.isLoggedIn) return next()
   const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
-  res.render('redirect', { to: getDataPalLoginUrl({ returnTo }) })
+  res.redirect(getDataPalLoginUrl({ returnTo }))
 }
 
 export async function loadDataPalProfile(req, res, next){
@@ -34,7 +34,7 @@ export async function loadDataPalProfile(req, res, next){
       purpose: 'So can show your profile to you and ONLY you.',
       returnTo: req.url, //TODO complete? test!
     })
-    res.redirect(url)
+    res.redirect(307, url)
   }
 }
 
