@@ -5,7 +5,15 @@
     {{/ datapalButton }}
   {{else}}
     <div style="display: flex; align-items: center;">
-      <span>Logged in as:&nbsp;</span>
+      <div>
+        <span>Logged in as:&nbsp;</span>
+        <a href="{{user.urls.account}}">
+          {{#if profile.avatar}}
+            {{> avatar src=profile.avatar alt=profile.name}}
+          {{/if}}
+          <span>{{profile.name}}</span>
+        </a>
+      </div>
       <a href="{{user.urls.account}}">
         {{user.displayName}}
       </a>

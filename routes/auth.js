@@ -43,23 +43,15 @@ export function getDataPalLoginUrl(searchParams){
 
 export function requireAuth(req, res, next){
   if (req.user && req.datapal.isLoggedIn) return next()
-  const returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
-  res.redirect(getDataPalLoginUrl({ returnTo }))
+  const params = {}
+  if (req.method.toLowerCase() === 'get')
+    params.returnTo = `${req.originalUrl}${new URLSearchParams(req.params)}`
+  res.redirect(getDataPalLoginUrl(params))
 }
 
 routes.get('/login', (req, res) => {
-  // // let url = `${process.env.DATAPAL_ORIGIN}/login/to/${process.env.HOST}`
-  // let referer = req.get('Referer')
-  // let returnTo
-  // if (referer) {
-  //   referer = new URL(referer)
-  //   returnTo = referer.toString().split(referer.origin)[1]
-  //   // url += '?returnTo=' + encodeURIComponent(returnTo)
-  // }
-  // res.redirect(getDataPalLoginUrl({ returnTo }))
   res.redirect(getDataPalLoginUrl())
 })
-// routes.get('/login', passport.authenticate('oauth2'))
 
 routes.get('/auth/callback',
   passport.authenticate('oauth2', {
@@ -91,15 +83,6 @@ routes.get('/logout', async (req, res, next) => {
   if (req.datapal) await req.datapal.logout()
   req.logout(error => {
     if (error) return next(error)
-    // res.redirect('/')
     res.render('redirect', {to: '/'})
   })
 })
-
-// routes.get('/datapal/select-shipping-address/callback', (req, res, next) => {
-//   const { documentId } = req.query
-//   res.json({
-//     params: req.params,
-//     query: req.query,
-//   })
-// })

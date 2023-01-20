@@ -28,9 +28,22 @@ routes.get('/', async (req, res) => {
   }
 
   if (req.datapal) {
-    locals.shoppingListDocument = await req.datapal.findDocument({
-      documentType: 'proofYouCanDrink',
-    })
+    const [profile, shoppingListDocument] = await Promise.all([
+      req.datapal.findDocument({documentType: 'profile'}),
+      req.datapal.findDocument({documentType: 'proofYouCanDrink'})
+    ])
+    locals.profile = profile.value
+    locals.profileUrl = profile.uri
+    locals.shoppingListDocument = shoppingListDocument
+
+    if (!profile){
+      const url = req.datapal.requestDocumentRedirect({
+        documentType: 'profile',
+        purpose: 'So can show your profile to you and ONLY you.',
+        returnTo: req.url, //TODO complete? test!
+      })
+      res.redirect(307, url)
+    }
   }
   locals.uploadedProof = !!req.session.uploadedProof
   locals.step1Complete = !!locals.user
