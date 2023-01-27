@@ -15,9 +15,7 @@ RUN pnpm install
 
 # copy over latest app
 COPY . .
-RUN ./scripts/prisma generate
-RUN pnpm run build
-RUN rm -rf ./client
+RUN npx prisma generate
 
 ENV PORT=80
 EXPOSE 80
