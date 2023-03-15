@@ -2,4 +2,6 @@
 
 set -e
 set -x
+
+export NODE_TLS_REJECT_UNAUTHORIZED="0"
 exec nodemon -w . -w .env --exec ./scripts/start.js
